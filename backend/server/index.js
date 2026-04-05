@@ -9,6 +9,8 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8787;
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const APPLE_MUSIC_ENABLED = !IS_PRODUCTION;
 
 app.use(cors({
   origin: [
@@ -422,6 +424,12 @@ app.post("/api/check-album", async (req, res) => {
     }
 
     if (provider === "apple") {
+      if (!APPLE_MUSIC_ENABLED) {
+        return res.status(400).json({
+          error: "Apple Music check is available on localhost only.",
+        });
+      }
+
       const parsed = parseAppleAlbumUrl(url);
 
       const requestedRegions =
