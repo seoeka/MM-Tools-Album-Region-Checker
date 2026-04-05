@@ -213,7 +213,12 @@ export default function App() {
           error: "",
         },
       }));
-      const API_URL = import.meta.env.VITE_API_URL;
+      
+      const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+
+      const API_URL = isLocal
+        ? "http://127.0.0.1:8787"
+        : "";
 
       const response = await fetch(`${API_URL}/api/check-album`, {
         method: "POST",
