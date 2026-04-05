@@ -10,8 +10,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8787;
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://mm-tools-album-region-checker.vercel.app"
+  ]
+}));app.use(express.json());
 
 const REGION_MAP = {
   JP: "JP",
