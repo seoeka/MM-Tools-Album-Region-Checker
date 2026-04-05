@@ -232,12 +232,18 @@ export default function App() {
         }),
       });
 
-      const data = await response.json();
+      const text = await response.text();
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`Server returned non-JSON response: ${text.slice(0, 120)}`);
+      }
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to check album");
       }
-
       setResultsByProvider((prev) => ({
         ...prev,
         [provider]: {
